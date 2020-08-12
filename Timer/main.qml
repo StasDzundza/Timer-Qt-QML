@@ -6,4 +6,31 @@ Window {
     width: 400
     height: 600
     title: qsTr("Timer")
+
+    Rectangle{
+        id: _background
+        anchors.fill: parent
+        color: "gray"
+
+        Column{
+            anchors.fill: parent
+            spacing: 20
+
+            TimeView{
+                width: parent.width
+                height: parent.height / 7
+                color: "white"
+            }
+
+            ButtonPannel{
+                width: parent.width - 20
+                height: parent.height / 3
+                buttonWidth: width
+                buttonHeight: height / 4
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 10
+            }
+        }
+
+    }
 }
