@@ -1,4 +1,5 @@
-import QtQuick 2.0
+import QtQuick 2.12
+import QtQuick.Dialogs 1.2
 import Timers 1.0
 
 Column {
@@ -20,18 +21,6 @@ Column {
             _startPauseButton.curText = "Start"
         }
 
-        onIsActiveChanged: {
-            if(isActive === true){
-                _resetButton.enabled = false;
-                _loadButton.enabled = false;
-                _tapButton.enabled = true;
-            }else{
-                _resetButton.enabled = true;
-                _loadButton.enabled = true;
-                _tapButton.enabled = false;
-            }
-        }
-
         signal sendTimeValue(string value)
         onTargetChanged: sendTimeValue.connect(target.receiveTime)
     }
@@ -42,8 +31,7 @@ Column {
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "green"
-        internalText : curText
-
+        buttonText : curText
 
         MouseArea{
             anchors.fill: parent
@@ -65,7 +53,8 @@ Column {
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "orange"
-        internalText: "Tap"
+        buttonText: "Tap"
+        enabled: _timer.isActive
     }
 
     Button{
@@ -73,8 +62,8 @@ Column {
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "lightblue"
-        internalText : "Reset"
-        enabled: true
+        buttonText : "Reset"
+        enabled: !_timer.isActive
 
         MouseArea{
             anchors.fill: parent
@@ -83,12 +72,46 @@ Column {
     }
 
     Button{
+        id: _timeEnterButton
+        width: parent.buttonWidth
+        height: parent.buttonHeight
+        color: "#8ebd3e"
+        buttonText: "Set initial time"
+        enabled: !_timer.isActive
+
+        MouseArea{
+            anchors.fill: parent
+            //onClicked: _timer.loadTime();
+            onClicked: _dialogWindow.open()
+        }
+
+        Dialog {
+            id: _dialogWindow
+            visible: false
+            title: "Enter the initial timer time"
+
+            TextEdit{
+                id: _timeEdit
+                width: 240
+                text: "mm:ss:zzz"
+                font.family: "Helvetica"
+                font.pointSize: 20
+                color: "blue"
+                focus: true
+            }
+
+            standardButtons: StandardButton.Save | StandardButton.Cancel
+            onAccepted: _timer.setTime(_timeEdit.text)
+        }
+    }
+
+    Button{
         id: _loadButton
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "purple"
-        internalText: "Load timer data"
-        enabled: true
+        buttonText: "Load initial time from file"
+        enabled: !_timer.isActive
 
         MouseArea{
             anchors.fill: parent
@@ -102,6 +125,6 @@ Column {
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "brown"
-        internalText: "Save current time"
+        buttonText: "Save current time"
     }
 }

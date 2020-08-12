@@ -1,5 +1,6 @@
 #include "timer.h"
 #include <QDebug>
+#include <QRegularExpression>
 
 Timer::Timer(QObject *parent) : QObject(parent), m_alarmSound(BEEP_RESOURCE_PATH)
 {
@@ -27,34 +28,29 @@ void Timer::reset()
     m_timeLeftText = "Time";
     emit timeLeftTextChanged();
     m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
+    m_isTimeSetted = false;
     m_isActive = false;
     emit isActiveChanged();
 }
 
 void Timer::loadTime()
 {
-    m_timeLeftText = "00:05:000";
+    QString timeText = "00:05:000";
+    setTime(timeText);
+}
+
+void Timer::setTime(const QString &textTime)
+{
+    int msec = textTimeToMsec(textTime);
+    if(msec != -1){
+        m_currentTimerTimeMsec = msec;
+        m_isTimeSetted = true;
+        m_timeLeftText = textTime;
+        m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
+    }else{
+        m_timeLeftText = "Incorrect time format received";
+    }
     emit timeLeftTextChanged();
-    //load and check by regular exp
-    //we are finding msec from string to int
-    QString m,s,ms;
-    int mmInt,ssInt, msInt;
-
-    m = m_timeLeftText[0];
-    m = m + m_timeLeftText[1];
-    mmInt = m.toInt();
-    s = m_timeLeftText[3];
-    s = s + m_timeLeftText[4];
-    ssInt = s.toInt();
-    ms = m_timeLeftText[6];
-    ms += m_timeLeftText[7];
-    ms += m_timeLeftText[8];
-
-    ssInt*=1000;
-    mmInt*=60*1000;
-    msInt = ms.toInt();
-
-    m_currentTimerTimeMsec = ssInt+mmInt+msInt;//timer time in mseconds
 }
 
 void Timer::saveTime()
@@ -71,6 +67,7 @@ void Timer::checkForTimeout()
         m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
         m_timeLeftText = "Time Out";
         emit timeLeftTextChanged();
+        m_isTimeSetted = false;
         m_isActive = false;
         emit isActiveChanged();
         emit timeout();
@@ -100,4 +97,20 @@ QString Timer::timeLeftText() const
 void Timer::setTimeLeftText(const QString &timeLeftText)
 {
     m_timeLeftText = timeLeftText;
+}
+
+int Timer::textTimeToMsec(const QString& textTime){
+    if(!isCorrectTimeFormat(textTime)){
+        return -1;
+    }else{
+        QStringList timeUnits = textTime.split(":");
+        return timeUnits.at(0).toInt() * 60 * 1000 +
+                timeUnits.at(1).toInt() * 1000 +
+                timeUnits.at(2).toInt();
+    }
+}
+
+bool Timer::isCorrectTimeFormat(const QString& textTime){
+    QRegularExpression timeFormatRegEx("\\d{1,2}:\\d{1,2}:\\d{1,3}");
+    return timeFormatRegEx.match(textTime).hasMatch();
 }

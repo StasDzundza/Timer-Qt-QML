@@ -1,13 +1,12 @@
 import QtQuick 2.0
 
 Rectangle {
-
-    property string internalText: ""
+    property string buttonText: ""
     radius: 5
 
     Text {
         id: valueText
-        text: parent.internalText
+        text: parent.buttonText
         font.bold: true
         //font.pointSize: Math.min(root.width,root.height)/3
         anchors.centerIn: parent

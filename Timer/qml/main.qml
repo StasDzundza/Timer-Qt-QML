@@ -5,6 +5,8 @@ Window {
     visible: true
     width: 400
     height: 600
+    minimumWidth: 400
+    minimumHeight: 600
     title: qsTr("Timer")
 
     Rectangle{

@@ -19,9 +19,10 @@ public:
     Q_INVOKABLE void reset();
     Q_INVOKABLE void loadTime();
     Q_INVOKABLE void saveTime();
+    Q_INVOKABLE void setTime(const QString&);
 
     QString timeLeftText() const;
-    void setTimeLeftText(const QString &timeLeftText);
+    void setTimeLeftText(const QString &);
 
     bool isActive() const;
     void setIsActive(bool isActive);
@@ -33,9 +34,13 @@ signals:
     void isActiveChanged();
     void timeLeftTextChanged();
     void timeout();
+private:
+    int textTimeToMsec(const QString&);
+    bool isCorrectTimeFormat(const QString&);
 
 private:
     bool m_isActive = false;
+    bool m_isTimeSetted = false;
     int m_currentTimerTimeMsec = 0;
     QString m_timeLeftText = "";
 
