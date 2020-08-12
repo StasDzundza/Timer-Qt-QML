@@ -17,18 +17,24 @@ void Timer::turnOnOf()
         m_lastStartTime = QTime::currentTime();
         m_timer.start(1);
     }
+    m_isActive = !m_isActive;
+    emit isActiveChanged();
 }
 
 void Timer::reset()
 {
     m_timer.stop();
     m_timeLeftText = "Time";
+    emit timeLeftTextChanged();
     m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
+    m_isActive = false;
+    emit isActiveChanged();
 }
 
 void Timer::loadTime()
 {
     m_timeLeftText = "00:05:000";
+    emit timeLeftTextChanged();
     //load and check by regular exp
     //we are finding msec from string to int
     QString m,s,ms;
@@ -58,20 +64,21 @@ void Timer::saveTime()
 
 void Timer::checkForTimeout()
 {
-    int on_stopwatch = m_timeOnStopwatch.msecsSinceStartOfDay() + QTime::currentTime().msecsSinceStartOfDay() - m_lastStartTime.msecsSinceStartOfDay();
-    QString time_on_sw_string = QTime::fromMSecsSinceStartOfDay(on_stopwatch).toString("mm:ss:zzz");
-    int remine  = m_currentTimerTimeMsec - on_stopwatch;
-    qDebug() << remine;
-    qDebug() << m_timeLeftText;
+    int onTimer = m_timeOnStopwatch.msecsSinceStartOfDay() + QTime::currentTime().msecsSinceStartOfDay() - m_lastStartTime.msecsSinceStartOfDay();
+    int remine = m_currentTimerTimeMsec - onTimer;
     if(remine <= 0){
         m_timer.stop();
         m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
         m_timeLeftText = "Time Out";
+        emit timeLeftTextChanged();
+        m_isActive = false;
+        emit isActiveChanged();
         emit timeout();
         m_alarmSound.play();
     }
     else{
         m_timeLeftText = QTime::fromMSecsSinceStartOfDay(remine).toString("mm:ss:zzz");
+        emit timeLeftTextChanged();
     }
 }
 

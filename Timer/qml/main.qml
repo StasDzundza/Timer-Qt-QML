@@ -17,12 +17,14 @@ Window {
             spacing: 20
 
             TimeView{
+                id: _timeView
                 width: parent.width
                 height: parent.height / 7
                 color: "white"
             }
 
             ButtonPannel{
+                timerTarger: _timeView
                 width: parent.width - 20
                 height: parent.height / 3
                 buttonWidth: width

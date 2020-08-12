@@ -11,12 +11,12 @@ Rectangle {
         id: _timerText
         text: parent.time
         font.bold: true
-        /*: {
-            bold: true
-            //pointSize: Math.min(root.width,root.height)/3
-        }*/
         color: parent.textColor
         anchors.centerIn: parent
+    }
+
+    function receiveTime(value){
+        time = value
     }
 
 }

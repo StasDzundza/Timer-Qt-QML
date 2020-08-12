@@ -30,14 +30,14 @@ private slots:
     void checkForTimeout();
 
 signals:
-    void isActiveChanged(bool);
-    void timeLeftTextChanged(QString);
+    void isActiveChanged();
+    void timeLeftTextChanged();
     void timeout();
 
 private:
     bool m_isActive = false;
     int m_currentTimerTimeMsec = 0;
-    QString m_timeLeftText = "Time";
+    QString m_timeLeftText = "";
 
     QTimer m_timer;
 

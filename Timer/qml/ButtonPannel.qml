@@ -5,11 +5,14 @@ Column {
     id: _buttonsColumn
     property int buttonWidth: 0
     property int buttonHeight: 0
+    property alias timerTarger: _timer.target
 
     Timer{
         id: _timer
+        property TimeView target: null
+
         onTimeLeftTextChanged: {
-            console.log(timeLeftText)
+            sendTimeValue(timeLeftText)
         }
 
         onTimeout: {
@@ -18,8 +21,19 @@ Column {
         }
 
         onIsActiveChanged: {
-            //set enabled buttons(load, reset, tap)
+            if(isActive === true){
+                _resetButton.enabled = false;
+                _loadButton.enabled = false;
+                _tapButton.enabled = true;
+            }else{
+                _resetButton.enabled = true;
+                _loadButton.enabled = true;
+                _tapButton.enabled = false;
+            }
         }
+
+        signal sendTimeValue(string value)
+        onTargetChanged: sendTimeValue.connect(target.receiveTime)
     }
 
     Button{
@@ -56,28 +70,30 @@ Column {
 
     Button{
         id: _resetButton
-        property bool isEnabled: true
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "lightblue"
         internalText : "Reset"
-        enabled: isEnabled
+        enabled: true
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: _timer.reset()
+        }
     }
 
     Button{
         id: _loadButton
-        property bool isEnabled: true
         width: parent.buttonWidth
         height: parent.buttonHeight
         color: "purple"
         internalText: "Load timer data"
-        enabled: isEnabled
+        enabled: true
 
         MouseArea{
             anchors.fill: parent
-            onClicked: {
-                _timer.loadTime();
-            }
+            onClicked: _timer.loadTime();
+
         }
     }
 
