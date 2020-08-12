@@ -9,7 +9,6 @@ Timer::Timer(QObject *parent) : QObject(parent), m_alarmSound(BEEP_RESOURCE_PATH
 
 void Timer::turnOnOf()
 {
-    //check for time existing
     if(m_timer.isActive()){
         m_timer.stop();
         m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(m_timeOnStopwatch.msecsSinceStartOfDay()+QTime::currentTime().msecsSinceStartOfDay()- m_lastStartTime.msecsSinceStartOfDay());
@@ -33,10 +32,23 @@ void Timer::reset()
     emit isActiveChanged();
 }
 
-void Timer::loadTime()
+void Timer::loadTime(const QString& fileName)
 {
-    QString timeText = "00:05:000";
-    setTime(timeText);
+    QString validFileName;
+    //removes unnecessary "file:///" at the fileName beginning
+    std::copy(fileName.begin() + 8, fileName.end(), std::back_inserter(validFileName));
+    QFile ifile(validFileName);
+    ifile.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&ifile);
+    QString text = in.readLine();
+    QStringList timeouts = text.split(" ");
+    if(!timeouts.isEmpty()){
+        setTime(timeouts.at(0));
+    }else{
+        m_timeLeftText = "Could not find any timeouts in file";
+        emit timeLeftTextChanged();
+    }
+    ifile.close();
 }
 
 void Timer::setTime(const QString &textTime)

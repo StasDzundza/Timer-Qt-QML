@@ -115,8 +115,15 @@ Column {
 
         MouseArea{
             anchors.fill: parent
-            onClicked: _timer.loadTime();
+            onClicked: _fileDialog.open()
+        }
 
+        FileDialog {
+            id: _fileDialog
+            title: "Please choose a file with the Timer timeout value"
+            nameFilters: [ "Text files (*.txt)"]
+            folder: shortcuts.home
+            onAccepted: _timer.loadTime(_fileDialog.fileUrl)
         }
     }
 

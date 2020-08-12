@@ -17,7 +17,7 @@ public:
     explicit Timer(QObject *parent = nullptr);
     Q_INVOKABLE void turnOnOf();
     Q_INVOKABLE void reset();
-    Q_INVOKABLE void loadTime();
+    Q_INVOKABLE void loadTime(const QString&);
     Q_INVOKABLE void saveTime();
     Q_INVOKABLE void setTime(const QString&);
 
