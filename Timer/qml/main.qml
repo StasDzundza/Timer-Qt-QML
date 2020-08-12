@@ -12,7 +12,18 @@ Window {
     Rectangle{
         id: _background
         anchors.fill: parent
-        color: "gray"
+        color: "#ededf2"
+        gradient: Gradient {
+            GradientStop {
+                position: 0
+                color: "#ededf2"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#00d4ff"
+            }
+        }
 
         Column{
             anchors.fill: parent

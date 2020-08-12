@@ -1,4 +1,6 @@
 #include "timer.h"
+#include "timer_logger.h"
+
 #include <QDebug>
 #include <QRegularExpression>
 
@@ -12,10 +14,12 @@ void Timer::turnOnOf()
     if(m_timer.isActive()){
         m_timer.stop();
         m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(m_timeOnStopwatch.msecsSinceStartOfDay()+QTime::currentTime().msecsSinceStartOfDay()- m_lastStartTime.msecsSinceStartOfDay());
+        TimerLogger::pauseEventLog(m_timeLeftText);
     }
     else{
         m_lastStartTime = QTime::currentTime();
         m_timer.start(1);
+        TimerLogger::startEventLog(m_timeLeftText);
     }
     m_isActive = !m_isActive;
     emit isActiveChanged();
@@ -24,6 +28,7 @@ void Timer::turnOnOf()
 void Timer::reset()
 {
     m_timer.stop();
+    TimerLogger::resetEventLog(m_timeLeftText);
     m_timeLeftText = "Time";
     emit timeLeftTextChanged();
     m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
@@ -43,10 +48,12 @@ void Timer::loadTime(const QString& fileName)
     QString text = in.readLine();
     QStringList timeouts = text.split(" ");
     if(!timeouts.isEmpty()){
+        TimerLogger::loadEventLog(timeouts.at(0), validFileName);
         setTime(timeouts.at(0));
     }else{
         m_timeLeftText = "Could not find any timeouts in file";
         emit timeLeftTextChanged();
+        TimerLogger::errorEventLog("Could not find any timeouts in file + \"" + validFileName + "\"" );
     }
     ifile.close();
 }
@@ -59,8 +66,10 @@ void Timer::setTime(const QString &textTime)
         m_isTimeSetted = true;
         m_timeLeftText = textTime;
         m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
+        TimerLogger::setTimeEventLog(m_timeLeftText);
     }else{
         m_timeLeftText = "Incorrect time format received";
+        TimerLogger::errorEventLog(m_timeLeftText);
     }
     emit timeLeftTextChanged();
 }
@@ -68,6 +77,7 @@ void Timer::setTime(const QString &textTime)
 void Timer::saveTime()
 {
     //save
+    //log
 }
 
 void Timer::checkForTimeout()
@@ -84,6 +94,7 @@ void Timer::checkForTimeout()
         emit isActiveChanged();
         emit timeout();
         m_alarmSound.play();
+        TimerLogger::infoLog("Timeout");
     }
     else{
         m_timeLeftText = QTime::fromMSecsSinceStartOfDay(remine).toString("mm:ss:zzz");
