@@ -34,13 +34,14 @@ void Timer::reset()
     m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
     m_isTimeSetted = false;
     m_isActive = false;
+    timeMoments.reset();
     emit isActiveChanged();
 }
 
 void Timer::loadTime(const QString& fileName)
 {
-    QString validFileName;
     //removes unnecessary "file:///" at the fileName beginning
+    QString validFileName;
     std::copy(fileName.begin() + 8, fileName.end(), std::back_inserter(validFileName));
     QFile ifile(validFileName);
     ifile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -72,6 +73,11 @@ void Timer::setTime(const QString &textTime)
         TimerLogger::errorEventLog(m_timeLeftText);
     }
     emit timeLeftTextChanged();
+}
+
+void Timer::saveCurrentTimeMoment()
+{
+    timeMoments.addTimeMoment(m_timeLeftText);
 }
 
 void Timer::saveTime()

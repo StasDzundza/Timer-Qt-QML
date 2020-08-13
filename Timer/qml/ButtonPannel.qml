@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Dialogs 1.2
-import Timers 1.0
+import Timer 1.0
 
 Column {
     id: _buttonsColumn
@@ -52,7 +52,6 @@ Column {
         id: _tapButton
         width: parent.buttonWidth
         height: parent.buttonHeight
-        color: "orange"
         buttonText: "Tap"
         enabled: _timer.isActive
     }
@@ -61,7 +60,6 @@ Column {
         id: _resetButton
         width: parent.buttonWidth
         height: parent.buttonHeight
-        color: "lightblue"
         buttonText : "Reset"
         enabled: !_timer.isActive
 
@@ -75,7 +73,6 @@ Column {
         id: _timeEnterButton
         width: parent.buttonWidth
         height: parent.buttonHeight
-        color: "#8ebd3e"
         buttonText: "Set initial time"
         enabled: !_timer.isActive
 
@@ -109,7 +106,6 @@ Column {
         id: _loadButton
         width: parent.buttonWidth
         height: parent.buttonHeight
-        color: "purple"
         buttonText: "Load initial time from file"
         enabled: !_timer.isActive
 
@@ -131,7 +127,6 @@ Column {
         id: _saveButton
         width: parent.buttonWidth
         height: parent.buttonHeight
-        color: "brown"
         buttonText: "Save current time"
     }
 }

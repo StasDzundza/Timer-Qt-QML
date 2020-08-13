@@ -36,6 +36,12 @@ Window {
                 color: "white"
             }
 
+            TimeMomentsView{
+                id: _timeMomentsView
+                width: parent.width
+                height: parent.height / 5
+            }
+
             ButtonPannel{
                 timerTarger: _timeView
                 width: parent.width - 20

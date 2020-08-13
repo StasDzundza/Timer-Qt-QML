@@ -1,7 +1,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <QObject>
+#include "timemomentmodel.h"
+
 #include <QQuickItem>
 #include <QTimer>
 #include <QTime>
@@ -20,6 +21,7 @@ public:
     Q_INVOKABLE void loadTime(const QString&);
     Q_INVOKABLE void saveTime();
     Q_INVOKABLE void setTime(const QString&);
+    Q_INVOKABLE void saveCurrentTimeMoment();
 
     QString timeLeftText() const;
     void setTimeLeftText(const QString &);
@@ -39,6 +41,8 @@ private:
     bool isCorrectTimeFormat(const QString&);
 
 private:
+    TimeMomentModel timeMoments;
+
     bool m_isActive = false;
     bool m_isTimeSetted = false;
     int m_currentTimerTimeMsec = 0;

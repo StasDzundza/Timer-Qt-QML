@@ -7,7 +7,8 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<Timer>("Timers", 1, 0, "Timer");
+    qmlRegisterType<Timer>("Timer", 1, 0, "Timer");
+    qmlRegisterType<Timer>("Timer", 1, 0, "TimeMomentModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));

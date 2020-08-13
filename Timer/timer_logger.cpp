@@ -21,7 +21,7 @@ void TimerLogger::resetEventLog(const QString &resetTime)
 
 void TimerLogger::loadEventLog(const QString &loadedTime, const QString& fileName)
 {
-    writeToFile("The following time has been loaded : " + loadedTime + "from file \""
+    writeToFile("The following time has been loaded : " + loadedTime + " from file \""
                 + fileName + "\"\n\n");
 }
 
