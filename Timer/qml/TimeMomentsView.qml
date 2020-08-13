@@ -2,20 +2,41 @@ import QtQuick 2.0
 import Timer 1.0
 
 ListView {
-    model: TimeMomentModel{
+    model: ListModel{
+        id: _timeMomentModel
     }
 
+    spacing: 1
+
     delegate: Rectangle{
-        anchors.fill: parent
+        width: parent.width
+        height: 30
         border.color: "black"
-        border.width: 2
+        border.width: 1
 
         Text {
             width: parent.width
-            height: 20
             color: "black"
-            text: display
             anchors.centerIn: parent
+            text: display.toString()
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: _timeMomentModel.append({display:"3"})
         }
     }
+
+    function addTimeMoment(value){
+        _timeMomentModel.append({display:value})
+    }
+
+    function clearModel(){
+        _timeMomentModel.clear()
+    }
+
+    function getTimeMomentModel(){
+        return _timeMomentModel
+    }
+
 }

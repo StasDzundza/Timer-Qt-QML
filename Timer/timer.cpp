@@ -34,7 +34,7 @@ void Timer::reset()
     m_timeOnStopwatch = QTime::fromMSecsSinceStartOfDay(0);
     m_isTimeSetted = false;
     m_isActive = false;
-    timeMoments.reset();
+    //m_timeMoments->reset();
     emit isActiveChanged();
 }
 
@@ -73,11 +73,6 @@ void Timer::setTime(const QString &textTime)
         TimerLogger::errorEventLog(m_timeLeftText);
     }
     emit timeLeftTextChanged();
-}
-
-void Timer::saveCurrentTimeMoment()
-{
-    timeMoments.addTimeMoment(m_timeLeftText);
 }
 
 void Timer::saveTime()
@@ -143,3 +138,4 @@ bool Timer::isCorrectTimeFormat(const QString& textTime){
     QRegularExpression timeFormatRegEx("\\d{1,2}:\\d{1,2}:\\d{1,3}");
     return timeFormatRegEx.match(textTime).hasMatch();
 }
+

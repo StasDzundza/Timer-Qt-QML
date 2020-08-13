@@ -21,13 +21,15 @@ public:
     Q_INVOKABLE void loadTime(const QString&);
     Q_INVOKABLE void saveTime();
     Q_INVOKABLE void setTime(const QString&);
-    Q_INVOKABLE void saveCurrentTimeMoment();
 
     QString timeLeftText() const;
     void setTimeLeftText(const QString &);
 
     bool isActive() const;
     void setIsActive(bool isActive);
+
+    TimeMomentModel *timeMoments() const;
+    void setTimeMoments(TimeMomentModel *timeMoments);
 
 private slots:
     void checkForTimeout();
@@ -41,7 +43,6 @@ private:
     bool isCorrectTimeFormat(const QString&);
 
 private:
-    TimeMomentModel timeMoments;
 
     bool m_isActive = false;
     bool m_isTimeSetted = false;

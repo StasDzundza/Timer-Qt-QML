@@ -6,11 +6,19 @@ Column {
     id: _buttonsColumn
     property int buttonWidth: 0
     property int buttonHeight: 0
-    property alias timerTarger: _timer.target
+    property alias textView: _timer.timeViewTarget
+    property TimeMomentsView timeMomentsViewTarget: null
+
+    signal sendTimeMoment(string value)
+    signal clearTimeMoments()
+    onTimeMomentsViewTargetChanged: {
+        clearTimeMoments.connect(timeMomentsViewTarget.clearModel)
+        sendTimeMoment.connect(timeMomentsViewTarget.addTimeMoment)
+    }
 
     Timer{
         id: _timer
-        property TimeView target: null
+        property TimeView timeViewTarget: null
 
         onTimeLeftTextChanged: {
             sendTimeValue(timeLeftText)
@@ -22,7 +30,7 @@ Column {
         }
 
         signal sendTimeValue(string value)
-        onTargetChanged: sendTimeValue.connect(target.receiveTime)
+        onTimeViewTargetChanged: sendTimeValue.connect(timeViewTarget.receiveTime)
     }
 
     Button{
@@ -54,6 +62,11 @@ Column {
         height: parent.buttonHeight
         buttonText: "Tap"
         enabled: _timer.isActive
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: sendTimeMoment(_timer.timeLeftText)
+        }
     }
 
     Button{
@@ -65,7 +78,10 @@ Column {
 
         MouseArea{
             anchors.fill: parent
-            onClicked: _timer.reset()
+            onClicked: {
+                clearTimeMoments();
+                _timer.reset()
+            }
         }
     }
 
@@ -98,7 +114,10 @@ Column {
             }
 
             standardButtons: StandardButton.Save | StandardButton.Cancel
-            onAccepted: _timer.setTime(_timeEdit.text)
+            onAccepted: {
+                _timer.setTime(_timeEdit.text)
+                clearTimeMoments();
+            }
         }
     }
 
@@ -111,7 +130,7 @@ Column {
 
         MouseArea{
             anchors.fill: parent
-            onClicked: _fileDialog.open()
+            onClicked: _fileDialog.open();
         }
 
         FileDialog {
@@ -119,7 +138,10 @@ Column {
             title: "Please choose a file with the Timer timeout value"
             nameFilters: [ "Text files (*.txt)"]
             folder: shortcuts.home
-            onAccepted: _timer.loadTime(_fileDialog.fileUrl)
+            onAccepted: {
+                _timer.loadTime(_fileDialog.fileUrl)
+                clearTimeMoments();
+            }
         }
     }
 

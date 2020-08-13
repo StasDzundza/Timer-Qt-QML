@@ -43,7 +43,9 @@ Window {
             }
 
             ButtonPannel{
-                timerTarger: _timeView
+                textView: _timeView
+                //timeMomentsModel: _timeMomentsView.timeMomentModel
+                timeMomentsViewTarget: _timeMomentsView
                 width: parent.width - 20
                 height: parent.height / 3
                 buttonWidth: width
