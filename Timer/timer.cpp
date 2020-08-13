@@ -3,6 +3,9 @@
 
 #include <QDebug>
 #include <QRegularExpression>
+namespace{
+    const QString BEEP_RESOURCE_PATH = "qrc:/sound/beep.wav";
+}
 
 Timer::Timer(QObject *parent) : QObject(parent), m_alarmSound(BEEP_RESOURCE_PATH)
 {
@@ -59,6 +62,11 @@ void Timer::loadTime(const QString& fileName)
     ifile.close();
 }
 
+void Timer::saveTime(QAbstractListModel* timeMomentsModel, const QString& fileName)
+{
+    TimerLogger::saveEventLog(m_timeLeftText, timeMomentsModel,fileName);
+}
+
 void Timer::setTime(const QString &textTime)
 {
     int msec = textTimeToMsec(textTime);
@@ -73,12 +81,6 @@ void Timer::setTime(const QString &textTime)
         TimerLogger::errorEventLog(m_timeLeftText);
     }
     emit timeLeftTextChanged();
-}
-
-void Timer::saveTime()
-{
-    //save
-    //log
 }
 
 void Timer::checkForTimeout()

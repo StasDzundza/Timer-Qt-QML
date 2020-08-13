@@ -15,7 +15,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        timemomentmodel.cpp \
         timer.cpp \
         timer_logger.cpp
 
@@ -33,6 +32,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    timemomentmodel.h \
     timer.h \
     timer_logger.h

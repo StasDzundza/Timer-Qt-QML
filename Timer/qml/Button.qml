@@ -3,7 +3,7 @@ import QtQuick 2.0
 Rectangle {
     property string buttonText: ""
     radius: 10
-    color: "white"
+    color: enabled ? "white":"#c0c4c1"
 
     Text {
         id: valueText

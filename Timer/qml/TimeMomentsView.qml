@@ -6,8 +6,6 @@ ListView {
         id: _timeMomentModel
     }
 
-    spacing: 1
-
     delegate: Rectangle{
         width: parent.width
         height: 30
@@ -16,14 +14,13 @@ ListView {
 
         Text {
             width: parent.width
-            color: "black"
             anchors.centerIn: parent
             text: display.toString()
+            anchors.rightMargin: 10
         }
 
         MouseArea{
             anchors.fill: parent
-            onClicked: _timeMomentModel.append({display:"3"})
         }
     }
 
@@ -36,7 +33,7 @@ ListView {
     }
 
     function getTimeMomentModel(){
-        return _timeMomentModel
+        return model
     }
 
 }

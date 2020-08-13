@@ -38,13 +38,14 @@ Window {
 
             TimeMomentsView{
                 id: _timeMomentsView
-                width: parent.width
-                height: parent.height / 5
+                width: parent.width - 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                height: parent.height / 7
+
             }
 
             ButtonPannel{
                 textView: _timeView
-                //timeMomentsModel: _timeMomentsView.timeMomentModel
                 timeMomentsViewTarget: _timeMomentsView
                 width: parent.width - 20
                 height: parent.height / 3

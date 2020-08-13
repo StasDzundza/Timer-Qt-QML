@@ -18,5 +18,4 @@ Rectangle {
     function receiveTime(value){
         time = value
     }
-
 }

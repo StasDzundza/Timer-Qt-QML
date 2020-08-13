@@ -1,12 +1,11 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include "timemomentmodel.h"
-
 #include <QQuickItem>
 #include <QTimer>
 #include <QTime>
 #include <QtMultimedia/QSound>
+#include <QStringListModel>
 
 class Timer : public QObject
 {
@@ -19,7 +18,7 @@ public:
     Q_INVOKABLE void turnOnOf();
     Q_INVOKABLE void reset();
     Q_INVOKABLE void loadTime(const QString&);
-    Q_INVOKABLE void saveTime();
+    Q_INVOKABLE void saveTime(QAbstractListModel*, const QString&);
     Q_INVOKABLE void setTime(const QString&);
 
     QString timeLeftText() const;
@@ -27,9 +26,6 @@ public:
 
     bool isActive() const;
     void setIsActive(bool isActive);
-
-    TimeMomentModel *timeMoments() const;
-    void setTimeMoments(TimeMomentModel *timeMoments);
 
 private slots:
     void checkForTimeout();
@@ -43,18 +39,15 @@ private:
     bool isCorrectTimeFormat(const QString&);
 
 private:
-
     bool m_isActive = false;
     bool m_isTimeSetted = false;
     int m_currentTimerTimeMsec = 0;
     QString m_timeLeftText = "";
 
     QTimer m_timer;
-
     QTime m_timeOnStopwatch;//time which is on the stopwatch
     QTime m_lastStartTime;//time of last start stopwatch
 
-    const QString BEEP_RESOURCE_PATH = "qrc:/sound/beep.wav";
     QSound m_alarmSound;
 };
 

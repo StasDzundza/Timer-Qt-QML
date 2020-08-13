@@ -94,7 +94,6 @@ Column {
 
         MouseArea{
             anchors.fill: parent
-            //onClicked: _timer.loadTime();
             onClicked: _dialogWindow.open()
         }
 
@@ -150,5 +149,22 @@ Column {
         width: parent.buttonWidth
         height: parent.buttonHeight
         buttonText: "Save current time"
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                _timer.saveTime(timeMomentsViewTarget.getTimeMomentModel())
+            }
+        }
+
+        FileDialog {
+            id: _saveFileDialog
+            title: "Please choose a file where you want to save the time value"
+            nameFilters: [ "Text files (*.txt)"]
+            folder: shortcuts.home
+            onAccepted: {
+                _timer.loadTime(_fileDialog.fileUrl)
+            }
+        }
     }
 }

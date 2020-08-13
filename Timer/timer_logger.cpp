@@ -25,18 +25,19 @@ void TimerLogger::loadEventLog(const QString &loadedTime, const QString& fileNam
                 + fileName + "\"\n\n");
 }
 
-void TimerLogger::saveEventLog(const QString &timerTime, const std::vector<QString>& timeMoments)
+void TimerLogger::saveEventLog(const QString &timerTime, const QAbstractListModel *timeMomentsModel,const QString& filePath)
 {
     QString logInfo = "The following time has been saved: " + timerTime + "\n";
-    if(timeMoments.size() > 0){
-        int i = 0;
+    int rowCount = timeMomentsModel->rowCount();
+    if(rowCount > 0){
         logInfo.append("Saved time moments:\n");
-        for(QString timeMoment: timeMoments){
-            logInfo.append(QString::number(i++) + ")" + " " + timeMoment);
+        for(int i = 0; i < rowCount; i++){
+            logInfo.append(QString::number(i + 1) + ")" + timeMomentsModel->index(i).data(Qt::DisplayRole).toString() + "\n");
         }
     }
     logInfo.append("\n\n");
     writeToFile(logInfo);
+    writeToConcretteFile(logInfo, filePath);
 }
 
 void TimerLogger::setTimeEventLog(const QString &settedTime)
@@ -54,9 +55,19 @@ void TimerLogger::infoLog(const QString &infoMessage)
     writeToFile(infoMessage + "\n\n");
 }
 
+void TimerLogger::infoLog(const QString &infoMessage, const QString &fileName)
+{
+    writeToConcretteFile(infoMessage, fileName);
+}
+
 void TimerLogger::writeToFile(const QString & text)
 {
-    QFile logFile(LOG_FILE_NAME);
+    writeToConcretteFile(text, LOG_FILE_NAME);
+}
+
+void TimerLogger::writeToConcretteFile(const QString &text, const QString &fileName)
+{
+    QFile logFile(fileName);
     logFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
     QTextStream stream(&logFile);
     stream << text;
