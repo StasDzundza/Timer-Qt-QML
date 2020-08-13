@@ -14,9 +14,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-        timer.cpp \
-        timer_logger.cpp
+        src/main.cpp \
+        src/timer.cpp \
+        src/timer_logger.cpp
+
+HEADERS += \
+    include/timer.h \
+    include/timer_logger.h
+
+INCLUDEPATH += $$PWD/include
 
 RESOURCES += qml.qrc
 
@@ -31,6 +37,3 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-    timer.h \
-    timer_logger.h
