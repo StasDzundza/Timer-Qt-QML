@@ -9,7 +9,7 @@ Rectangle {
         id: valueText
         text: parent.buttonText
         font.bold: true
-        //font.pointSize: Math.min(root.width,root.height)/3
+        font.pointSize: Math.min(parent.width,parent.height) / 4
         anchors.centerIn: parent
     }
 

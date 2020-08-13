@@ -10,9 +10,10 @@ Rectangle {
     Text {
         id: _timerText
         text: parent.time
-        font.bold: true
         color: parent.textColor
         anchors.centerIn: parent
+        font.pointSize: Math.min(parent.width,parent.height)/6
+        wrapMode:Text.WordWrap
     }
 
     function receiveTime(value){
